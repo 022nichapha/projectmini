@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunder Express - ระบบจัดการพัสดุ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="container nav-flex">
+            <div class="logo">THUNDER <span>EXPRESS</span></div>
+            <div class="search-bar-header">
+                <input type="text" placeholder="กรอกหมายเลขพัสดุเพื่อติดตาม...">
+                <button class="btn-search">ค้นหา</button>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('home')">หน้าหลัก</a>
+                <a href="#" onclick="showPage('tracking')">บริการของเรา</a>
+                <a href="#" onclick="showPage('calc')">เช็คราคา</a>
+                <span id="display-user" class="user-name" style="display:none;">คุณ |</span>
+                <a href="#" id="nav-login-btn" onclick="showPage('login')">เข้าสู่ระบบ</a>
+                <a href="#" id="nav-logout-btn" class="logout" onclick="logout()" style="display:none;">ออกจากระบบ</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="page-home" class="page container">
+        <section class="banner-section">
+            <div class="social-floating">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="FB">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Line">
+            </div>
+            <div class="main-banner">
+                <img src="https://www.tnnthailand.com/static/2025/72ae2b8c-4b19-4e6b-b86a-f0ddd8eaf48a.webp" alt="poster">
+            </div>
+            <div class="quick-search-box">
+                <input type="text" placeholder="กรุณากรอกเลขพัสดุของคุณ">
+                <button class="btn-yellow">ตรวจเช็คพัสดุ</button>
+            </div>
+        </section>
+
+        <div class="circle-menu-container">
+            <div class="menu-item" onclick="showPage('calc')">
+                <div class="icon-circle yellow">🛒</div>
+                <p>คำนวณค่าจัดส่ง</p>
+            </div>
+            <div class="menu-item" onclick="showPage('tracking')">
+                <div class="icon-circle yellow">📦</div>
+                <p>ติดตามพัสดุ</p>
+            </div>
+            <div class="menu-item" onclick="showPage('partners')">
+                <div class="icon-circle yellow">👥</div>
+                <p>ผู้บริหาร</p>
+            </div>
+            <div class="menu-item" onclick="showPage('contact')">
+                <div class="icon-circle yellow">💬</div>
+                <p>ติดต่อ</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">บริการแนะนำ</h2>
+        <div class="service-grid">
+            <div class="s-card">
+                <div class="s-icon">📦</div>
+                <h4>ส่งพัสดุ</h4>
+                <p>บริการส่งพัสดุจากหน้าร้านหรือจุดรับบริการ</p>
+                <button class="btn-s" onclick="showPage('add-shipment')">เพิ่ม</button>
+            </div>
+            <div class="s-card">
+                <div class="s-icon">📋</div>
+                <h4>เคลมพัสดุ</h4>
+                <p>แจ้งปัญหาหรือเคลมสินค้าเสียหาย</p>
+                <button class="btn-s" onclick="showPage('claim-status')">แจ้งเติม</button>
+            </div>
+            <div class="s-card">
+                <div class="s-icon">🏠</div>
+                <h4>รับพัสดุ</h4>
+                <p>รายการพัสดุที่รอการรับมอบ</p>
+                <button class="btn-s" onclick="showPage('add-receive')">เพิ่ม</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-login" class="page container" style="display:none;">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <h3>เข้าสู่ระบบ</h3>
+                <div class="field-group">
+                    <input type="text" id="login-phone" placeholder="เบอร์โทรศัพท์" style="width:100%; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+                    <input type="password" id="login-pass" placeholder="รหัสผ่าน" style="width:100%; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+                </div>
+                <button class="btn-yellow full" onclick="handleLogin()">ตกลง</button>
+                <p style="margin-top: 15px; text-align: center; font-size: 14px;">
+                    ยังไม่มีบัญชี? <a href="#" onclick="showPage('register')" style="color: #ffcc00; font-weight: bold;">สมัครสมาชิก</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-register" class="page container" style="display:none;">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <h3>สมัครสมาชิก</h3>
+                <div class="field-group">
+                    <input type="text" id="reg-name" placeholder="ชื่อ-นามสกุล" style="width:100%; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+                    <input type="text" id="reg-phone" placeholder="เบอร์โทรศัพท์" style="width:100%; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+                    <input type="password" id="reg-pass" placeholder="ตั้งรหัสผ่าน" style="width:100%; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+                </div>
+                <button class="btn-yellow full" onclick="handleRegister()">ยืนยันการสมัคร</button>
+                <p style="margin-top: 15px; text-align: center; font-size: 14px;">
+                    เป็นสมาชิกอยู่แล้ว? <a href="#" onclick="showPage('login')" style="color: #ffcc00; font-weight: bold;">เข้าสู่ระบบ</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-add-shipment" class="page container" style="display:none;">
+        <div class="back-nav" onclick="showPage('home')"> ❮ เพิ่มรายการส่งพัสดุ</div>
+        <div class="form-container">
+            <h3>ข้อมูลผู้ส่ง - ผู้รับ</h3>
+            <div class="field-group">
+                <label><span class="red">*</span> ชื่อ-นามสกุล ผู้ส่ง</label>
+                <input type="text" placeholder="ระบุชื่อผู้ส่ง">
+            </div>
+            <div class="field-group">
+                <label><span class="red">*</span> เบอร์โทรศัพท์ผู้รับ</label>
+                <input type="text" placeholder="ระบุเบอร์โทรศัพท์ผู้รับ">
+            </div>
+            <div class="field-group">
+                <label><span class="red">*</span> ที่อยู่ปลายทาง</label>
+                <textarea placeholder="ระบุที่อยู่โดยละเอียด"></textarea>
+            </div>
+            <button class="btn-yellow full" onclick="alert('บันทึกข้อมูลส่งพัสดุสำเร็จ')">ยืนยันข้อมูลการส่ง</button>
+        </div>
+    </main>
+
+    <main id="page-add-receive" class="page container" style="display:none;">
+        <div class="back-nav" onclick="showPage('home')"> ❮ เพิ่มรายการรับพัสดุ</div>
+        <div class="form-container">
+            <h3>แจ้งรับพัสดุ (Pick-up)</h3>
+            <div class="field-group">
+                <label><span class="red">*</span> ระบุหมายเลขพัสดุที่ต้องการรับ</label>
+                <input type="text" placeholder="THXXXXXXXXXX">
+            </div>
+            <div class="field-group">
+                <label><span class="red">*</span> สถานที่นัดรับ</label>
+                <select class="custom-select">
+                    <option>สาขาใกล้บ้าน</option>
+                    <option>จุดรับพัสดุอัตโนมัติ</option>
+                    <option>นัดรับที่บ้าน</option>
+                </select>
+            </div>
+            <button class="btn-yellow full" onclick="alert('บันทึกรายการนัดรับสำเร็จ')">ลงทะเบียนรับพัสดุ</button>
+        </div>
+    </main>
+
+    <main id="page-calc" class="page container" style="display:none;">
+        <div class="back-nav" onclick="showPage('home')"> ❮ คำนวณค่าจัดส่ง</div>
+        <div class="calc-box">
+            <div class="field-group">
+                <label><span class="red">*</span> ที่อยู่ต้นทาง</label>
+                <input type="text" placeholder="ต้นทาง">
+            </div>
+            <div class="field-group">
+                <label><span class="red">*</span> ที่อยู่ปลายทาง</label>
+                <input type="text" placeholder="ปลายทาง">
+            </div>
+            <div class="field-group">
+                <label><span class="red">*</span> น้ำหนัก (กก.)</label>
+                <input type="number" placeholder="0.00">
+            </div>
+            <div class="calc-btns">
+                <button class="btn-gray" onclick="alert('คำนวณราคาเรียบร้อย')">ชำระโดยผู้ส่ง</button>
+                <button class="btn-gray" onclick="alert('คำนวณราคาเรียบร้อย')">ชำระโดยผู้รับ</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-tracking" class="page container" style="display:none;">
+        <div class="breadcrumb">หน้าแรก > ติดตามพัสดุ</div>
+        <div class="content-box">
+            <div class="search-large">
+                <input type="text" placeholder="กรุณากรอกเลขพัสดุ">
+                <button class="btn-yellow">ตรวจเช็ค</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-partners" class="page container" style="display:none;">
+        <div class="back-nav" onclick="showPage('home')"> ❮ ผู้บริหาร</div>
+        <div class="exec-layout">
+            <div class="exec-card main">
+                <img src="img/1.jpg" alt="CEO">
+                <h4>สันติ แซ่ลี้</h4>
+                <p>CEO</p>
+                <img src="img/2.jpg" alt="เลขา">
+                <h4>เสี่ยวหยู</h4>
+                <p>Secretary</p>
+                <img src="img/3.jpg" alt="เลขา">
+                <h4>รุยเจี่ย</h4>
+                <p>Secretary</p>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-contact" class="page container" style="display:none;">
+        <div class="back-nav" onclick="showPage('home')"> ❮ ติดต่อเรา</div>
+        <div class="contact-grid">
+            <div class="contact-card">💬 ฝ่ายบริการลูกค้า</div>
+            <div class="contact-card">📞 1212</div>
+        </div>
+    </main>
+
+    <main id="page-claim-status" class="page container" style="display:none;">
+        <div class="breadcrumb">หน้าแรก > ยื่นเคลม</div>
+        <div class="claim-header">
+            <span class="claim-icon">🪙</span>
+            <h2>ยื่นเคลม สินค้า</h2>
+        </div>
+        <div class="claim-steps-grid">
+            <div class="steps-text">
+                <div class="step-box active">แนบรูปภาพพัสดุ</div>
+                <div class="step-box">เลือกหัวข้อความเสียหาย</div>
+                <div class="step-box">ระบุรายละเอียด</div>
+            </div>
+            <div class="steps-visual">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdnea9j-Mk0_4SH-uD_3fYwRN-ulY85-58pjZRNVMr0_n4Vy24At2SIALApvW5BGkdC8k&usqp=CAU" alt="Claim">
+            </div>
+        </div>
+    </main>
+
+    <div id="successModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <p id="modal-text">ดำเนินการสำเร็จ</p>
+            <div class="check-mark">✔</div>
+            <button class="btn-yellow" onclick="closeModal()">ตกลง</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
